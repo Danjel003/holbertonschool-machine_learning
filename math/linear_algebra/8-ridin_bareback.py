@@ -9,7 +9,7 @@ def mat_mul(mat1, mat2):
 
     if m1_cols != m2_rows:
         return None
-    
+
     result = [[0 for _ in range(m2_cols)] for _ in range(m1_rows)]
 
     for i in range(m1_rows):
