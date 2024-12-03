@@ -1,14 +1,22 @@
 #!/usr/bin/env python3
-""" Derivative """
+""" defines a function that calculates the derivative of a polynomial """
+
 
 def poly_derivative(poly):
-"""    Kontrolli nëse është një listë e vlefshme """
-    if not isinstance(poly, list):
+    """ function to calculate derivative"""
+
+    if type(poly) is not list or len(poly) < 1:
         return None
-
-    """Nëse polinomi ka vetëm një element, derivati është 0 (për një konstante)"""
-    if len(poly) <= 1:
-        return [0]
-
-    """ """
-    return [poly[i] * i for i in range(1, len(poly))]
+    for coefficient in poly:
+        if type(coefficient) is not int and type(coefficient) is not float:
+            return None
+    for power, coefficient in enumerate(poly):
+        if power == 0:
+            derivative = [0]
+            continue
+        if power == 1:
+            derivative = []
+        derivative.append(power * coefficient)
+    while derivative[-1] == 0 and len(derivative) > 1:
+        derivative = derivative[:-1]
+    return derivative
