@@ -6,7 +6,7 @@ e = 2.7182818285
 
 
 class Exponential:
-    """Class Exponential"""
+    """Class Exponential """
     def __init__(self, data=None, lambtha=1.):
         """Class constructor"""
         if data is None:
