@@ -19,3 +19,15 @@ class Poisson:
             elif len(data) < 2:
                 raise ValueError("data must contain multiple values")
             self.lambtha = sum(data)/len(data)
+
+    """Update the class Posiion"""
+    def pmf(self, k):
+        """Instance method"""
+        if type(k) is not int:
+            k = int(k)
+        if k < 0:
+            return 0
+        fact = 1
+        for i in range(i, k+1):
+            fact = fact * i
+        return (e ** -self.lambtha * self.lambtha ** k) / fact
