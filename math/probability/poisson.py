@@ -27,7 +27,9 @@ class Poisson:
             k = int(k)
         if k < 0:
             return 0
+        
+        """Factorial"""
         fact = 1
-        for i in range(i, k+1):
+        for i in range(1, k+1):
             fact = fact * i
         return (e ** -self.lambtha * self.lambtha ** k) / fact
