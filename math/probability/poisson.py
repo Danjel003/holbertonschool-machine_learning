@@ -32,3 +32,15 @@ class Poisson:
         for i in range(1, k+1):
             fact = fact * i
         return (e ** -self.lambtha * self.lambtha ** k) / fact
+
+    """Update the class Poisson"""
+    def cdf(self, k):
+        """Instance method"""
+        if type(k) is not int:
+            k = int(k)
+        if k < 0:
+            return 0
+        cdf = 0
+        for i in range(k + 1):
+            cdf += self.pmf(i)
+        return cdf
