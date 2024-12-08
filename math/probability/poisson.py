@@ -27,7 +27,6 @@ class Poisson:
             k = int(k)
         if k < 0:
             return 0
-        
         """Factorial"""
         fact = 1
         for i in range(1, k+1):
