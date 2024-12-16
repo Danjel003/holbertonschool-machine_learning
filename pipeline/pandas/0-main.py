@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 
+
 import numpy as np
 from_numpy = __import__('0-from_numpy').from_numpy
 
