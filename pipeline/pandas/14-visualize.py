@@ -25,10 +25,18 @@ df = df.set_index('Date')
 df['Close'].fillna(method='ffill', inplace=True)
 
 # Fill missing values in High, Low, Open with the same row's Close value
+"""
+# Fill missing values
+df['Close'] = df['Close'].ffill()
+df['High'] = df['High'].fillna(df['Close'])
+df['Low'] = df['Low'].fillna(df['Close'])
+df['Open'] = df['Open'].fillna(df['Close'])
+"""
 df[['High', 'Low', 'Open']] = df[['High', 'Low', 'Open']].fillna(df['Close'])
 
 # Fill missing values in Volume_(BTC) and Volume_(Currency) with 0
-df[['Volume_(BTC)', 'Volume_(Currency)']] = df[['Volume_(BTC)', 'Volume_(Currency)']].fillna(0)
+df['Volume_(BTC)'] = df['Volume_(BTC)'].fillna(0)
+df['Volume_(Currency)'] = df['Volume_(Currency)'].fillna(0)
 
 # Filter the DataFrame for data from 2017 onwards
 df = df[df.index >= '2017-01-01']
@@ -45,7 +53,10 @@ daily_data = df.resample('D').agg({
 
 # Plotting the data
 plt.figure(figsize=(14, 7))
-plt.plot(daily_data.index, daily_data['Close'], label='Close Price', color='blue')
+plt.plot(
+    daily_data.index, daily_data['Close'],
+    label='Close Price',
+    color='blue')
 plt.title('Daily Close Price of Bitcoin (2017 and Beyond)')
 plt.xlabel('Date')
 plt.ylabel('Close Price (USD)')
