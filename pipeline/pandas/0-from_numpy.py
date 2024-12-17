@@ -1,7 +1,11 @@
 #!/usr/bin/env python3
+"""
+Defines function that creates a Pandas DataFrame from a Numpy ndarray
+"""
 
 
 import pandas as pd
+
 
 def from_numpy(array):
     """Creates a DataFrame from a np.ndarray with columns labeled A-Z"""
