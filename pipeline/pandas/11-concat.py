@@ -2,6 +2,8 @@
 """
 Task 11: Concat
 """
+import pandas as pd
+index = __import__('10-index').index
 
 
 def concat(df1, df2):
