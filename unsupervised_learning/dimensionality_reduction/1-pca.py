@@ -38,7 +38,13 @@ def pca(X, ndim):
 
     # Sort the eigenvalues and eigenvectors in descending order
     sorted_indices = np.argsort(eigenvalues)[::-1]
+    eigenvalues_sorted = eigenvalues[sorted_indices]
     eigenvectors_sorted = eigenvectors[:, sorted_indices]
+
+    # Ensure the signs of the eigenvectors are consistent with the desired output
+    for i in range(eigenvectors_sorted.shape[1]):
+        if eigenvectors_sorted[0, i] < 0:
+            eigenvectors_sorted[:, i] = -eigenvectors_sorted[:, i]
 
     # Select the top 'ndim' eigenvectors to form the projection matrix
     W = eigenvectors_sorted[:, :ndim]
