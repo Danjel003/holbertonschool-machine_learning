@@ -2,17 +2,19 @@
 """ PCA """
 import numpy as np
 
-
 def pca(X, var=0.95):
     """
-    Perform PCA on the dataset X and return the weights matrix W that maintains the specified variance fraction.
+    Perform PCA on the dataset X and return the weights matrix W that 
+    maintains the specified variance fraction.
 
     Parameters:
-    - X: numpy.ndarray of shape (n, d), where n is the number of data points, and d is the number of features.
+    - X: numpy.ndarray of shape (n, d), where n is the number of data 
+      points, and d is the number of features.
     - var: Fraction of variance to retain (default is 0.95).
     
     Returns:
-    - W: numpy.ndarray of shape (d, nd), where nd is the number of principal components selected.
+    - W: numpy.ndarray of shape (d, nd), where nd is the number of 
+      principal components selected.
     """
     # Step 1: Center the data (subtract the mean of each feature)
     X_centered = X - np.mean(X, axis=0)
@@ -34,6 +36,9 @@ def pca(X, var=0.95):
     
     # Step 6: Select the number of components that explain the desired variance fraction
     num_components = np.argmax(variance_explained >= var) + 1
+    
+    # Ensure at least one component is selected (in case of very low variance explained)
+    num_components = max(num_components, 1)
     
     # Step 7: The weights matrix W contains the eigenvectors corresponding to the top components
     W = eigenvectors_sorted[:, :num_components]
