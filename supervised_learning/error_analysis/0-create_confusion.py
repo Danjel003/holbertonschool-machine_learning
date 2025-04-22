@@ -22,7 +22,7 @@ def create_confusion_matrix(labels, logits):
     classes = labels.shape[1]
     # initialize confusion matrix
 
-    #krijo matric me 0
+    # krijo matric me 0
     conf_matrix = np.zeros((classes, classes))
 
     # loop across the examples
@@ -30,7 +30,7 @@ def create_confusion_matrix(labels, logits):
         # determine true class & predicted class
         # argmax -> pozicioni ku vlera eshte me e madhe
         # pozicioni vertet
-        true_class = np.argmax(labels[i]) 
+        true_class = np.argmax(labels[i])
         # pozicioni parashikuar
         predicted_class = np.argmax(logits[i])
 
