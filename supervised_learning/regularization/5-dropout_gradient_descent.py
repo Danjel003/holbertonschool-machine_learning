@@ -1,35 +1,52 @@
 #!/usr/bin/env python3
-
+"""
+    Gradient descent with L2 regularization
+"""
 import numpy as np
-dropout_forward_prop = __import__('4-dropout_forward_prop').dropout_forward_prop
-dropout_gradient_descent = __import__('5-dropout_gradient_descent').dropout_gradient_descent
 
 
-def one_hot(Y, classes):
-    """convert an array to a one-hot matrix"""
-    m = Y.shape[0]
-    one_hot = np.zeros((classes, m))
-    one_hot[Y, np.arange(m)] = 1
-    return one_hot
+def dropout_gradient_descent(Y, weights, cache, alpha, keep_prob, L):
+    """
+        function that updates weights of NN with Dropout reg
+        using gradient descent
 
-if __name__ == '__main__':
-    lib= np.load('MNIST.npz')
-    X_train_3D = lib['X_train']
-    Y_train = lib['Y_train']
-    X_train = X_train_3D.reshape((X_train_3D.shape[0], -1)).T
-    Y_train_oh = one_hot(Y_train, 10)
+        :param Y: ndarray, shape(classes,m) correct labels
+        :param weights: dict, weights and biases of NN
+        :param cache: dict, output and dropout mask of each layer
+        :param alpha: learning rate
+        :param keep_prob: proba a node will be kept
+        :param L: number of layer of network
+    """
 
-    np.random.seed(0)
+    # store m
+    m = Y.shape[1]
 
-    weights = {}
-    weights['W1'] = np.random.randn(256, 784)
-    weights['b1'] = np.zeros((256, 1))
-    weights['W2'] = np.random.randn(128, 256)
-    weights['b2'] = np.zeros((128, 1))
-    weights['W3'] = np.random.randn(10, 128)
-    weights['b3'] = np.zeros((10, 1))
+    # derivative of final layer (softmax)
+    A = cache['A' + str(L)]
+    dZ = A - Y
 
-    cache = dropout_forward_prop(X_train, weights, 3, 0.8)
-    print(weights['W2'])
-    dropout_gradient_descent(Y_train_oh, weights, cache, 0.1, 0.8, 3)
-    print(weights['W2'])
+    # gradient, weight and bias for last layer
+    A_prev = cache['A' + str(L - 1)]
+    W = weights['W' + str(L)]
+    dW = np.matmul(dZ, A_prev.T) / m
+    db = np.sum(dZ, axis=1, keepdims=True) / m
+    dA_prev = np.matmul(W.T, dZ)
+
+    weights['W' + str(L)] -= alpha * dW
+    weights['b' + str(L)] -= alpha * db
+
+    # with dropout reg
+    for layer in range(L - 1, 0, -1):
+        D = cache['D' + str(layer)]
+        dA = dA_prev * (D / keep_prob)
+
+        A = cache['A' + str(layer)]
+        A_prev = cache['A' + str(layer - 1)]
+        dZ = dA * (1 - A ** 2)
+        dW = np.matmul(dZ, A_prev.T) / m
+        db = np.sum(dZ, axis=1, keepdims=True) / m
+        W = weights['W' + str(layer)]
+        dA_prev = np.matmul(W.T, dZ)
+
+        weights['W' + str(layer)] -= alpha * dW
+        weights['b' + str(layer)] -= alpha * db

@@ -1,39 +1,44 @@
 #!/usr/bin/env python3
+"""
+    Gradient Descent with L2 regularization
+"""
 
 import numpy as np
-l2_reg_gradient_descent = __import__('1-l2_reg_gradient_descent').l2_reg_gradient_descent
 
 
-def one_hot(Y, classes):
-    """convert an array to a one-hot matrix"""
-    m = Y.shape[0]
-    one_hot = np.zeros((classes, m))
-    one_hot[Y, np.arange(m)] = 1
-    return one_hot
+def l2_reg_gradient_descent(Y, weights, cache, alpha, lambtha, L):
+    """
+        function that updates the weights and biases of NN
+        using gradient descent with L2 regularization
 
-if __name__ == '__main__':
-    lib= np.load('MNIST.npz')
-    X_train_3D = lib['X_train']
-    Y_train = lib['Y_train']
-    X_train = X_train_3D.reshape((X_train_3D.shape[0], -1)).T
-    Y_train_oh = one_hot(Y_train, 10)
+        Formula:
+        W = W - alpha * (dW + (lambtha/m) * W)
+    """
+    # store m number training examples
+    m = Y.shape[1]
 
-    np.random.seed(0)
+    # derivative of final layer
+    # starting point for backpropagation
+    dZ = cache['A' + str(L)] - Y
 
-    weights = {}
-    weights['W1'] = np.random.randn(256, 784)
-    weights['b1'] = np.zeros((256, 1))
-    weights['W2'] = np.random.randn(128, 256)
-    weights['b2'] = np.zeros((128, 1))
-    weights['W3'] = np.random.randn(10, 128)
-    weights['b3'] = np.zeros((10, 1))
+    # backpropagation loop
+    for layer in range(L, 0, -1):
+        L2_regularization = lambtha / m * weights['W' + str(layer)]
 
-    cache = {}
-    cache['A0'] = X_train
-    cache['A1'] = np.tanh(np.matmul(weights['W1'], cache['A0']) + weights['b1'])
-    cache['A2'] = np.tanh(np.matmul(weights['W2'], cache['A1']) + weights['b2'])
-    Z3 = np.matmul(weights['W3'], cache['A2']) + weights['b3']
-    cache['A3'] = np.exp(Z3) / np.sum(np.exp(Z3), axis=0)
-    print(weights['W1'])
-    l2_reg_gradient_descent(Y_train_oh, weights, cache, 0.1, 0.1, 3)
-    print(weights['W1'])
+        # activation of previous layer
+        A_prev = cache['A' + str(layer - 1)]
+
+        # Gradient of Weight and biases
+        dW = np.matmul(dZ, A_prev.T) / m + L2_regularization
+        db = np.sum(dZ, axis=1, keepdims=True) / m
+        dA = np.matmul(weights['W' + str(layer)].T, dZ)
+
+        # derivative of tanh activation
+        if layer != 1:
+            dZ = dA * (1 - A_prev ** 2)
+        else:  # Apply softmax derivative for the last layer
+            dZ = dA
+
+        # update weights
+        weights['W' + str(layer)] -= alpha * dW
+        weights['b' + str(layer)] -= alpha * db

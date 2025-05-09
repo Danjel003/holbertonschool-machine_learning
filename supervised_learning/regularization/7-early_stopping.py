@@ -1,9 +1,15 @@
 #!/usr/bin/env python3
+"""
+    Early Stopping
+"""
 
-early_stopping = __import__('7-early_stopping').early_stopping
 
-if __name__ == '__main__':
-    print(early_stopping(1.0, 1.9, 0.5, 15, 5))
-    print(early_stopping(1.1, 1.5, 0.5, 15, 2))
-    print(early_stopping(1.0, 1.5, 0.5, 15, 8))
-    print(early_stopping(1.0, 1.5, 0.5, 15, 14))
+def early_stopping(cost, opt_cost, threshold, patience, count):
+    """
+        function that determines if should stop gradient descent early
+    """
+    if opt_cost - cost > threshold:
+        count = 0
+    else:
+        count += 1
+    return count == patience, count

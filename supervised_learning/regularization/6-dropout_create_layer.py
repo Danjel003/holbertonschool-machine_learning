@@ -1,20 +1,27 @@
 #!/usr/bin/env python3
-
-import numpy as np
+"""
+Task 6 : dropout
+"""
 import tensorflow as tf
-import random
-import os
 
-SEED = 4
 
-os.environ['PYTHONHASHSEED'] = str(SEED)
-os.environ['TF_ENABLE_ONEDNN_OPTS'] = '0'
-random.seed(SEED)
-np.random.seed(SEED)
-tf.random.set_seed(SEED)
+def dropout_create_layer(prev, n, activation, keep_prob, training=True):
+    """
 
-dropout_create_layer = __import__('6-dropout_create_layer').dropout_create_layer
+    """
 
-X = np.random.randint(0, 256, size=(10, 784))
-a = dropout_create_layer(X, 256, tf.nn.tanh, 0.8)
-print(a[0])
+    # Initialize layer weights using He initialization
+    init = tf.keras.initializers.VarianceScaling(scale=2.0, mode='fan_avg')
+
+    # Create dense layer
+    dense_layer = tf.keras.layers.Dense(units=n, activation=activation,
+                                        kernel_initializer=init)
+
+    # Apply dense layer to previous layer
+    output = dense_layer(prev)
+
+    # Apply dropout regularization
+    dropout_layer = tf.keras.layers.Dropout(rate=1-keep_prob)
+    output = dropout_layer(output, training=training)
+
+    return output
