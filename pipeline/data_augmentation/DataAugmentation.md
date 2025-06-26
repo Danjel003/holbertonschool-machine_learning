@@ -184,8 +184,5 @@ If you followed this tutorial, try running it on a dataset like **MNIST**, **Fas
 
 ---
 
-*Written by [Your Name]*  
+*Written by Danjel Kalari*  
 *Data Science Enthusiast | Aspiring ML Engineer*
-
-📍 *Follow me on [LinkedIn](https://www.linkedin.com)*  
-💬 *Comments or questions? Leave them below!*
