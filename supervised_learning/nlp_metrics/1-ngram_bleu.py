@@ -1,11 +1,14 @@
 #!/usr/bin/env python3
+"""
+Module that calculates the n-gram BLEU score for a sentence
+"""
+import math
+
 
 def ngram_bleu(references, sentence, n):
     """
     Calculates the n-gram BLEU score for a sentence
     """
-    import math
-
     # Length of candidate sentence
     c = len(sentence)
 
