@@ -1,11 +1,14 @@
 #!/usr/bin/env python3
+"""
+Module that calculates the cumulative n-gram BLEU score for a sentence
+"""
+import math
+
 
 def cumulative_bleu(references, sentence, n):
     """
     Calculates the cumulative n-gram BLEU score for a sentence
     """
-    import math
-
     # Length of candidate sentence
     c = len(sentence)
 
@@ -60,4 +63,3 @@ def cumulative_bleu(references, sentence, n):
     # BLEU score
     bleu = BP * score
     return bleu
-
