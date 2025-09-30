@@ -1,9 +1,11 @@
+```python
 #!/usr/bin/env python3
 """
 Text
 """
 import math
 from collections import Counter
+
 
 def uni_bleu(references, sentence):
     """
@@ -16,7 +18,10 @@ def uni_bleu(references, sentence):
     ref_lens = [len(ref) for ref in references]
 
     # Find closest reference length
-    closest_ref_len = min(ref_lens, key=lambda ref_len: (abs(ref_len - cand_len), ref_len))
+    closest_ref_len = min(
+        ref_lens,
+        key=lambda ref_len: (abs(ref_len - cand_len), ref_len)
+    )
 
     # Brevity penalty
     if cand_len > closest_ref_len:
